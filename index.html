@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radius · Clinical NLP</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <!-- ═══════════════ SIDEBAR ═══════════════ -->
+      <aside class="sidebar">
+        <div class="sidebar-head">
+          <div class="brand">
+            <div class="brand-mark">R</div>
+            <div>
+              <p class="brand-kicker">Clinical NLP</p>
+              <h1>Radius</h1>
+            </div>
+          </div>
+          <button id="btn-new-thread" class="btn-new-thread">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            New Case
+          </button>
+        </div>
+
+        <p class="sidebar-section-title">Patient Threads</p>
+
+        <div id="thread-list" class="thread-list"></div>
+
+        <div class="sidebar-foot">
+          Threads are auto-grouped by patient identity extracted from report
+          text.
+        </div>
+      </aside>
+
+      <!-- ═══════════════ CHAT PANE ═══════════════ -->
+      <main class="chat-pane">
+        <!-- Header -->
+        <header class="chat-header">
+          <div style="min-width: 0">
+            <p class="chat-kicker">Radiology Copilot</p>
+            <h2 id="active-thread-title">New Case</h2>
+            <p id="active-thread-meta" class="chat-meta">
+              Paste a report and run analysis. Patient identity is
+              auto-detected.
+            </p>
+          </div>
+          <span id="connection-pill" class="connection-pill">Connecting…</span>
+        </header>
+
+        <!-- Feed -->
+        <section id="chat-feed" class="chat-feed">
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M9 12h6M9 16h6M9 8h3M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"
+                />
+              </svg>
+            </div>
+            <h3>No report analyzed yet</h3>
+            <p>
+              Upload or paste radiology findings below to start a patient
+              thread.
+            </p>
+          </div>
+        </section>
+
+        <!-- Composer -->
+        <footer class="composer">
+          <label class="composer-label" for="findings-text">Report text</label>
+          <textarea
+            id="findings-text"
+            placeholder="Paste full report text — include Patient Name, DOB, MRN, Findings, Impression for best results…"
+          ></textarea>
+          <div class="composer-actions">
+            <div
+              id="drop-zone"
+              class="drop-zone"
+              role="button"
+              tabindex="0"
+              aria-label="Upload file"
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+              <span id="file-label">Upload .txt or .pdf</span>
+              <input
+                type="file"
+                id="file-input"
+                style="display: none"
+                accept=".txt,.pdf"
+              />
+            </div>
+            <button
+              class="btn-execute"
+              id="btn-execute"
+              onclick="app.execute()"
+            >
+              Analyze Report
+            </button>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <script>
+      // Configure frontend → backend base URL.
+      // For local hackathon usage, backend runs on 127.0.0.1:8000 with /api/v1 prefix.
+      // In production, this can be overridden at deploy time.
+      window.__RADIUS_API_BASE__ =
+        window.__RADIUS_API_BASE__ || "http://127.0.0.1:8000/api/v1";
+    </script>
+    <script src="app.js"></script>
+  </body>
+</html>
